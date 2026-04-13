@@ -36,21 +36,16 @@ public class CitaMapper {
         return citaDTO;
     }
 
-    public Cita aEntidad(CitaDTO citaDTO) throws ParseException {
+    public Cita aEntidad(CitaDTO citaDTO, Paciente paciente, Medico medico) throws ParseException {
         Cita cita = new Cita();
+        cita.setId(citaDTO.getId());
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        Date fecha = sdf.parse(citaDTO.getFecha());
-        cita.setFecha(fecha);
+        Date  fechaFormateada = sdf.parse(citaDTO.getFecha());
+        cita.setFecha(fechaFormateada);
         cita.setCancelada(citaDTO.isCancelado());
-        cita.setStatusCita(StatusCita.valueOf(citaDTO.getStatusCita()));
-        Optional<Paciente> paciente = pacienteRepositorio.findById(citaDTO.getPacienteId());
-        Paciente pacienteBD = paciente.get();
-        cita.setPaciente(pacienteBD);
-        Optional<Medico> medico = medicoRepositorio.findById(citaDTO.getMedicoId());
-        Medico medicoBD = medico.get();
-        cita.setMedico(medicoBD);
+        cita.setStatusCita(StatusCita.valueOf(String.valueOf(citaDTO.getStatusCita())));
+        cita.setPaciente(paciente);
+        cita.setMedico(medico);
         return cita;
     }
-
-
 }

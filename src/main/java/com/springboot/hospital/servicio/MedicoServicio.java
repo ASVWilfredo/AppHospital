@@ -9,10 +9,10 @@ import java.util.Optional;
 
 public interface MedicoServicio {
     List<MedicoDTO> obtenerMedicos();
-    Optional<MedicoDTO> obtenerMedicoPorId(Long medicoId);
+    Optional<MedicoDTO> obtenerMedicoPorId(Long id);
     MedicoDTO crearMedico(MedicoDTO medicoDTO);
-    MedicoDTO actualizarMedico(MedicoDTO medicoDTO);
+    MedicoDTO actualizarMedico(Long id, MedicoDTO medicoDTO);
     void eliminarMedico(Long medicoId);
     Collection<CitaDTO> obtenerCitasPorIdMedico(Long medicoId);
-    List<MedicoDTO>  obtenerMedicosPorEspecialidad();
+    List<MedicoDTO> obtenerMedicosPorEspecialidad(String especialidad);
 }
