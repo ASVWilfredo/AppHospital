@@ -11,7 +11,7 @@ public interface ConsultaServicio {
     List<ConsultaDTO> obtenerConsultas();
     Optional<ConsultaDTO> obtenerConsultaPorId(Long id);
     ConsultaDTO crearConsulta(Long citaId, ConsultaDTO consultaDTO) throws ParseException;
-    ConsultaDTO modificarConsulta(Long id, ConsultaDTO consultaDTO);
+    ConsultaDTO modificarConsulta(Long id, ConsultaDTO consultaDTO) throws ParseException;
     void eliminarConsulta(Long id);
     List<ConsultaDTO> obtenerConsultasPorInformeContaining(String searchTerm);
     List<ConsultaDTO> obtenerConsultasPorCita(Cita cita);

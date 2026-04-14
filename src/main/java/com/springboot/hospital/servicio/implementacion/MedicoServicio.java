@@ -9,12 +9,14 @@ import com.springboot.hospital.mappers.MedicoMapper;
 import com.springboot.hospital.reposiorio.MedicoRepositorio;
 import com.springboot.hospital.servicio.CitaServicio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Service
 public class MedicoServicio implements com.springboot.hospital.servicio.MedicoServicio {
     @Autowired
     private MedicoRepositorio medicoRepositorio;
@@ -49,7 +51,7 @@ public class MedicoServicio implements com.springboot.hospital.servicio.MedicoSe
 
     @Override
     public MedicoDTO actualizarMedico(Long id, MedicoDTO medicoDTO) {
-        Optional<Medico> optionalMedico = medicoRepositorio.findById(medicoDTO.getId());
+        Optional<Medico> optionalMedico = medicoRepositorio.findById(id);
         if(optionalMedico.isPresent()){
             Medico medico = optionalMedico.get();
             medico.setNombre(medicoDTO.getNombre());

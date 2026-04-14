@@ -67,12 +67,13 @@ public class CitaServicio implements com.springboot.hospital.servicio.CitaServic
     public Cita crearCita(CitaDTO citaDTO, Long idPaciente, Long idMedico) throws ParseException {
         PacienteDTO pacienteDTO = pacienteServicio.obtenerPacientePorId(idPaciente).orElse(null);
         MedicoDTO medicoDTO = medicoServicio.obtenerMedicoPorId(idMedico).orElse(null);
-        if(pacienteDTO == null && medicoDTO == null){
+        if(pacienteDTO == null || medicoDTO == null){
             return null;
         }
-        Paciente paciente = pacienteMapper.aEntidad(pacienteDTO);
-        Medico medico = medicoMapper.aEntidad(medicoDTO);
-        Cita cita = citaMapper.aEntidad(citaDTO,paciente,medico);
+        citaDTO.setPacienteId(idPaciente);
+        citaDTO.setMedicoId(idMedico);
+        Cita cita = citaMapper.aEntidad(citaDTO);
+
         return citaRepositorio.save(cita);
     }
 
@@ -83,15 +84,21 @@ public class CitaServicio implements com.springboot.hospital.servicio.CitaServic
             Cita cita = citaOptional.get();
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
             Date fecha = sdf.parse(citaDTO.getFecha());
-
+            cita.setFecha(fecha);
             cita.setCancelada(citaDTO.isCancelado());
             cita.setStatusCita(StatusCita.valueOf(citaDTO.getStatusCita()));
 
-            Optional<Paciente>pacienteOptional = pacienteRepositorio.findById(cita.getPaciente().getId());
-            cita.setPaciente(pacienteOptional.get());
+            Paciente paciente = pacienteRepositorio.findById(citaDTO.getPacienteId()).orElse(null);
+            if (paciente == null) {
+                return null;
+            }
+            cita.setPaciente(paciente);
 
-            Optional<Medico> medicoOptional = medicoRepositorio.findById(cita.getMedico().getId());
-            cita.setMedico(medicoOptional.get());
+            Medico medico = medicoRepositorio.findById(citaDTO.getMedicoId()).orElse(null);
+            if (medico == null) {
+                return null;
+            }
+            cita.setMedico(medico);
 
             return citaMapper.aDTO(citaRepositorio.save(cita));
         }

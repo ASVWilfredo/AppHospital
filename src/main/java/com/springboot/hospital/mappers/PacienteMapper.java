@@ -20,7 +20,7 @@ public class PacienteMapper {
         paciente.setId(pacienteDTO.getId());
         paciente.setNombre(pacienteDTO.getNombre());
         paciente.setFechaNacimiento(pacienteDTO.getFechaNacimiento());
-        paciente.setEnfermedad(pacienteDTO.getEnfermedad());
+        paciente.setEnfermedad(Boolean.TRUE.equals(pacienteDTO.getEnfermedad()));
         return paciente;
 
     }

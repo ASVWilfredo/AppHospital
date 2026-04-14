@@ -20,7 +20,7 @@ public class Application {
 		SpringApplication.run(Application.class, args);
 	}
 
-	//@Bean
+	// @Bean
 	CommandLineRunner iniciar(PacienteRepositorio pacienteRepositorio, MedicoRepositorio medicoRepositorio,
 							  CitaRepositorio citaRepositorio, ConsultaRepositorio  consultaRepositorio) {
 		return args -> {
@@ -31,7 +31,7 @@ public class Application {
 				paciente.setEnfermedad(false);
 				pacienteRepositorio.save(paciente);
 			});
-			Stream.of("Alan", "Maria", "Jaime").forEach(nombre -> {
+			Stream.of("Dr. Alan", "Dra. Maria", "Dr. Jaime").forEach(nombre -> {
 				Medico medico = new Medico();
 				medico.setNombre(nombre);
 				medico.setEmail(nombre + ((int) Math.random() * 9) + "@gmail.com");

@@ -1,8 +1,6 @@
 package com.springboot.hospital.mappers;
 
 import com.springboot.hospital.Modelo.Cita;
-import com.springboot.hospital.Modelo.Medico;
-import com.springboot.hospital.Modelo.Paciente;
 import com.springboot.hospital.Modelo.StatusCita;
 import com.springboot.hospital.dto.CitaDTO;
 import com.springboot.hospital.reposiorio.MedicoRepositorio;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Component;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Optional;
 
 @Component
 public class CitaMapper {
@@ -25,7 +22,7 @@ public class CitaMapper {
 
     public CitaDTO aDTO(Cita cita) {
         CitaDTO citaDTO = new CitaDTO();
-        citaDTO.setId(citaDTO.getId());
+        citaDTO.setId(cita.getId());
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         String fechaFormateada =  sdf.format(cita.getFecha());
         citaDTO.setFecha(fechaFormateada);
@@ -36,16 +33,17 @@ public class CitaMapper {
         return citaDTO;
     }
 
-    public Cita aEntidad(CitaDTO citaDTO, Paciente paciente, Medico medico) throws ParseException {
+    public Cita aEntidad(CitaDTO citaDTO) throws ParseException {
         Cita cita = new Cita();
         cita.setId(citaDTO.getId());
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        Date  fechaFormateada = sdf.parse(citaDTO.getFecha());
+        Date fechaFormateada = sdf.parse(citaDTO.getFecha());
         cita.setFecha(fechaFormateada);
+
         cita.setCancelada(citaDTO.isCancelado());
-        cita.setStatusCita(StatusCita.valueOf(String.valueOf(citaDTO.getStatusCita())));
-        cita.setPaciente(paciente);
-        cita.setMedico(medico);
+        cita.setStatusCita(StatusCita.valueOf(citaDTO.getStatusCita()));
+        cita.setPaciente(pacienteRepositorio.findById(citaDTO.getPacienteId()).orElse(null));
+        cita.setMedico(medicoRepositorio.findById(citaDTO.getMedicoId()).orElse(null));
         return cita;
     }
 }

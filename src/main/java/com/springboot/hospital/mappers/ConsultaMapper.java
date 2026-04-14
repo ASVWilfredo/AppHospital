@@ -12,13 +12,14 @@ import java.text.SimpleDateFormat;
 @Component
 public class ConsultaMapper {
     private static final SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+
     public ConsultaDTO aDTO(Consulta consulta) {
         ConsultaDTO consultaDTO = new ConsultaDTO();
         consultaDTO.setId(consulta.getId());
-        consultaDTO.setFechaConsulta(formatoFecha.format(consulta.getFechaConsulta()));
+        consultaDTO.setFechaConsultaFromDate(consulta.getFechaConsulta());
         consultaDTO.setInforme(consulta.getInforme());
         if(consulta.getCita() != null) {
-            Cita cita = new Cita();
+            Cita cita = consulta.getCita();
             CitaDTO citaDTO = new CitaDTO();
             citaDTO.setId(cita.getId());
             citaDTO.setFecha(formatoFecha.format(cita.getFecha()));
@@ -36,12 +37,12 @@ public class ConsultaMapper {
         consulta.setId(consultaDTO.getId());
         consulta.setFechaConsulta((formatoFecha.parse(consultaDTO.getFechaConsulta())));
         consulta.setInforme(consultaDTO.getInforme());
-        if(consultaDTO != null) {
+        if(consultaDTO.getCitaDTO() != null) {
             CitaDTO citaDTO = consultaDTO.getCitaDTO();
             Cita cita = new Cita();
             cita.setId(citaDTO.getId());
             consulta.setCita(cita);
         }
-        return null;
+        return consulta;
     }
 }

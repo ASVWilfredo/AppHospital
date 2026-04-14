@@ -10,12 +10,14 @@ import com.springboot.hospital.reposiorio.CitaRepositorio;
 import com.springboot.hospital.reposiorio.PacienteRepositorio;
 import com.springboot.hospital.servicio.CitaServicio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Service
 public class PacienteServicio implements com.springboot.hospital.servicio.PacienteServicio {
     @Autowired
     private PacienteRepositorio  pacienteRepositorio;
@@ -58,7 +60,9 @@ public class PacienteServicio implements com.springboot.hospital.servicio.Pacien
             Paciente paciente = optionalPaciente.get();
             paciente.setNombre(pacienteDTO.getNombre());
             paciente.setFechaNacimiento(pacienteDTO.getFechaNacimiento());
-            paciente.setEnfermedad(pacienteDTO.getEnfermedad());
+            if (pacienteDTO.getEnfermedad() != null) {
+                paciente.setEnfermedad(pacienteDTO.getEnfermedad());
+            }
             paciente = pacienteRepositorio.save(paciente);
             return pacienteMapper.aDTO(paciente);
         }
